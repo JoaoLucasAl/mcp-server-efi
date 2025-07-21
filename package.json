@@ -1,6 +1,6 @@
 {
   "name": "mcp-server-efi",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "Um serviço que permite o consumo das APIs do Efí Bank através de um servidor MCP.",
   "author": "João Lucas Alberto Muniz",
   "type": "module",
