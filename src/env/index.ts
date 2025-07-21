@@ -1,6 +1,8 @@
 import { z } from 'zod';
+import minimist from 'minimist';
 
-// Valida se a string representa "true" ou "false", ignorando o case, e transforma em booleano
+const rawArgs = minimist(process.argv.slice(2));
+
 const booleanString = z
   .string()
   .transform((val) => val.toLowerCase())
@@ -10,28 +12,34 @@ const booleanString = z
   .transform((val) => val === 'true');
 
 const envSchema = z.object({
-  SANDBOX: booleanString,
-  CLIENT_ID: z.string(),
-  CLIENT_SECRET: z.string(),
-  CERTIFICATE: z.string(),
-  // .optional(),
-  VALIDATE_MTLS: z
+  sandbox: booleanString,
+  'client-id': z.string(),
+  'client-secret': z.string(),
+  certificate: z.string(),
+  'validate-mtls': z
     .string()
     .optional()
     .transform((val) => {
-      if (val === undefined) return true; // valor padrão se não definido
+      if (val === undefined) return true; // valor padrão
       const lowered = val.toLowerCase();
       if (lowered === 'true') return true;
       if (lowered === 'false') return false;
-      throw new Error('VALIDATE_MTLS deve ser "true" ou "false"');
+      throw new Error('validate-mtls deve ser "true" ou "false"');
     }),
 });
 
-const _env = envSchema.safeParse(process.env);
+// Faz o parse dos argumentos
+const _env = envSchema.safeParse(rawArgs);
 
 if (!_env.success) {
-  console.error('Failed to parse environment variables', _env.error.format());
-  throw new Error('Invalid environment variables');
+  console.error('Falha ao validar argumentos:', _env.error.format());
+  throw new Error('Argumentos inválidos');
 }
 
-export const env = _env.data;
+export const env = {
+  SANDBOX: _env.data.sandbox,
+  CLIENT_ID: _env.data['client-id'],
+  CLIENT_SECRET: _env.data['client-secret'],
+  CERTIFICATE: _env.data.certificate,
+  VALIDATE_MTLS: _env.data['validate-mtls'] ?? true,
+};
