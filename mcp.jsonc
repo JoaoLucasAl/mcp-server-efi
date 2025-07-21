@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "mcp-server-efi": {
+      "command": "node",
+      "args": [
+        "path\\to\\mcp-server-efi\\dist\\src\\index.js"
+      ],
+            "env": {
+                "SANDBOX": "false", // false = produção | true = homologação
+                "CLIENT_ID": "Client_Id_...",
+                "CLIENT_SECRET": "Client_Secret_..",
+                "CERTIFICATE": "Certificado em Base64",
+                "VALIDATE_MTLS": "true" // true = Valida mTLS no webhook
+            }
+    }
+  }
+}
