@@ -23,24 +23,23 @@ npx mcp-server-efi
 ### Docker
 
 ```bash
-docker run -i --rm \
-  -e SANDBOX="false" \
-  -e CLIENT_ID="seu_client_id" \
-  -e CLIENT_SECRET="seu_client_secret" \
-  -e CERTIFICATE="seu_certificado_base64" \
-  -e VALIDATE_MTLS="true" \
-  mcp-server-efi
+docker run -i --rm mcp-server-efi \
+  --sandbox=false \
+  --client-id=seu_client_id \
+  --client-secret=seu_client_secret \
+  --certificate=seu_certificado_base64 \
+  --validate-mtls=true
 ```
 
 ## Configuração
 
 O servidor requer as seguintes variáveis de ambiente:
 
-- `SANDBOX`: Defina como `"false"` para produção ou `"true"` para ambiente sandbox
-- `CLIENT_ID`: Seu Client ID da aplicação do Efí Bank
-- `CLIENT_SECRET`: Seu Client Secret da aplicação do Efí Bank
-- `CERTIFICATE`: Seu certificado do Efí Bank em formato Base64
-- `VALIDATE_MTLS`: Defina como `"true"` para validar mTLS nos webhooks (opcional, padrão é true)
+- `sandbox`: Defina como `"false"` para produção ou `"true"` para ambiente sandbox
+- `client-id`: Seu Client ID da aplicação do Efí Bank
+- `client-secret`: Seu Client Secret da aplicação do Efí Bank
+- `certificate`: Seu certificado do Efí Bank em formato Base64
+- `validate-mtls`: Defina como `"true"` para validar mTLS nos webhooks (opcional, padrão é true)
 
 ## API
 
@@ -166,17 +165,18 @@ Adicione isso ao seu `claude_desktop_config.json`:
   "mcpServers": {
     "mcp-server-efi": {
       "command": "npx",
-      "args": ["mcp-server-efi"],
-      "env": {
-        "SANDBOX": "false",
-        "CLIENT_ID": "seu_client_id_aqui",
-        "CLIENT_SECRET": "seu_client_secret_aqui",
-        "CERTIFICATE": "seu_certificado_base64_aqui",
-        "VALIDATE_MTLS": "true"
-      }
+      "args": [
+        "mcp-server-efi",
+        "--sandbox=false",
+        "--client-id=seu_client_id",
+        "--client-secret=seu_client_secret",
+        "--certificate=seu_certificado_base64",
+        "--validate-mtls=true"
+      ]
     }
   }
 }
+
 ```
 
 ### Uso com Docker no Claude Desktop
@@ -190,17 +190,12 @@ Adicione isso ao seu `claude_desktop_config.json`:
         "run",
         "-i",
         "--rm",
-        "-e",
-        "SANDBOX=false",
-        "-e",
-        "CLIENT_ID=seu_client_id",
-        "-e",
-        "CLIENT_SECRET=seu_client_secret",
-        "-e",
-        "CERTIFICATE=seu_certificado_base64",
-        "-e",
-        "VALIDATE_MTLS=true",
-        "mcp-server-efi"
+        "mcp-server-efi",
+        "--sandbox=false",
+        "--client-id=seu_client_id",
+        "--client-secret=seu_client_secret",
+        "--certificate=seu_certificado_base64",
+        "--validate-mtls=true"
       ]
     }
   }
@@ -219,14 +214,14 @@ Para instalação manual, adicione o seguinte às configurações do VS Code ou 
     "servers": {
       "mcp-server-efi": {
         "command": "npx",
-        "args": ["mcp-server-efi"],
-        "env": {
-          "SANDBOX": "false",
-          "CLIENT_ID": "seu_client_id",
-          "CLIENT_SECRET": "seu_client_secret",
-          "CERTIFICATE": "seu_certificado_base64",
-          "VALIDATE_MTLS": "true"
-        }
+        "args": [
+          "mcp-server-efi",
+          "--sandbox=false",
+          "--client-id=seu_client_id",
+          "--client-secret=seu_client_secret",
+          "--certificate=seu_certificado_base64",
+          "--validate-mtls=true"
+        ]
       }
     }
   }
@@ -245,17 +240,12 @@ Para instalação manual, adicione o seguinte às configurações do VS Code ou 
           "run",
           "-i",
           "--rm",
-          "-e",
-          "SANDBOX=false",
-          "-e",
-          "CLIENT_ID=seu_client_id",
-          "-e",
-          "CLIENT_SECRET=seu_client_secret",
-          "-e",
-          "CERTIFICATE=seu_certificado_base64",
-          "-e",
-          "VALIDATE_MTLS=true",
-          "mcp-server-efi"
+          "mcp-server-efi",
+          "--sandbox=false",
+          "--client-id=seu_client_id",
+          "--client-secret=seu_client_secret",
+          "--certificate=seu_certificado_base64",
+          "--validate-mtls=true"
         ]
       }
     }
@@ -281,9 +271,9 @@ docker build -t mcp-server-efi .
 
 ## Notas de Segurança
 
-- Sempre use credenciais de produção (`SANDBOX=false`) para transações reais
+- Sempre use credenciais de produção (`sandbox=false`) para transações reais
 - Mantenha seus certificados e credenciais seguros
-- Habilite a validação mTLS (`VALIDATE_MTLS=true`) para segurança do webhook
+- Habilite a validação mTLS (`validate-mtls=true`) para segurança do webhook
 - Todas as chamadas da API são autenticadas usando a implementação OAuth 2.0 do Efí Pay
 
 ## Suporte
